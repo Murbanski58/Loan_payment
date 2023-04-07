@@ -14,11 +14,11 @@
 
 import pytest
 from datetime import date
-from friend import *
+from oop_loan_pmt import *
 
 
 ### unit tests ###
-def test_calculate_current_age():
+def getDiscountFactor():
     """
     GIVEN a user enters the year they were born
     WHEN that year is passed to this function
@@ -31,7 +31,34 @@ def test_calculate_current_age():
     )  # STATIC: will change as the years progress
 
 
-def test_calculate_current_age():
+def calculateDiscountFactor():
+    """
+    GIVEN a user enters the year they were born
+    WHEN that year is passed to this function
+    THEN the user's age is accurately calculated
+    """
+    birth_year = 1995
+    today = date.today()
+    expected_age = today.year - birth_year
+    assert (
+        calculate_current_age(birth_year) == expected_age
+    )  # DYNAMIC: calculates the current year
+
+def calculateLoanPmt():
+    """
+    GIVEN a user enters the year they were born
+    WHEN that year is passed to this function
+    THEN the user's age is accurately calculated
+    """
+    birth_year = 1995
+    today = date.today()
+    expected_age = today.year - birth_year
+    assert (
+        calculate_current_age(birth_year) == expected_age
+    )  # DYNAMIC: calculates the current year
+
+
+def getLoanPmt():
     """
     GIVEN a user enters the year they were born
     WHEN that year is passed to this function
