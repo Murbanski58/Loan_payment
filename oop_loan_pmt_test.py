@@ -49,7 +49,7 @@ def testLoanPmt():
 
 # Functional Tests
 
-def testcollectLoanDetails():
+def testcollectLoanDetails(monkeypatch):
     """
     GIVEN a user enters their loan details
     WHEN the user clicks the calculate button
@@ -58,9 +58,13 @@ def testcollectLoanDetails():
     input_values = ["100000", "30", ".06"]
     def mock_input(s):
         return input_values.pop(0)
+    monkeypatch.setattr('builtins.input', mock_input)
     print("\r")
     print(" -- collectLoanDetailsfunctional test")
-    assert collectLoanDetails() == (100000, 30, .06)
+    loan = collectLoanDetails()
+    expected_values = (100000, 30, .06)
+    actual_values = (loan.loanAmount, loan.numberOfPmts / 12, loan.annualRate)
+    assert expected_values == actual_values
 
 def test_main():
     """
