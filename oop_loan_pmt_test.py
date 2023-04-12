@@ -18,17 +18,11 @@ from oop_loan_pmt import *
 
 
 # Unit Tests
-
-def test_loan_init():
-    loan = Loan(100000, .06, 30)
-    assert loan.loanAmount == 100000
-    assert loan.annualRate == .06
-    assert loan.
-def getDiscountFactor():
+def testLoanDiscountFactor():
     """
-    GIVEN a user enters their loan information
-    WHEN calculateDiscountFactor  is called
-    THEN the discount factor is  calculated
+    GIVEN a user enters loan information
+    WHEN calculateDiscountFactor is called
+    THEN the discount factor will be calculated
     """
     loan = Loan(loanAmount=100000, numberYears=30, annualRate=0.06)
     loan.calculateDiscountFactor()
@@ -36,14 +30,13 @@ def getDiscountFactor():
     print(" -- calculateDiscountFactor method unit test")
     assert loan.getDiscountFactor() == pytest.approx(
         166.79, rel=1e-3
-    )  
+    )
 
-
-def getLoanPmt():
+def testLoanPmt():
     """
-    GIVEN a user enters their loan information
-    WHEN calculateLoanPmt  is called
-    THEN the loan payment is  calculated
+    GIVEN a user enters loan information
+    WHEN calculateLoanPmt is called
+    THEN the loan payment will be calculated
     """
     loan = Loan(loanAmount=100000, numberYears=30, annualRate=0.06)
     loan.calculateLoanPmt()
@@ -51,28 +44,42 @@ def getLoanPmt():
     print(" -- calculateLoanPmt method unit test")
     assert loan.getLoanPmt() == pytest.approx(
         599.55, rel=1e-3
-    )
+    ) 
+
 
 # Functional Tests
 
-def collectLoanDetails(client):
+def testcollectLoanDetails():
     """
     GIVEN a user enters their loan details
     WHEN the user clicks the calculate button
     THEN the user's loan amount, number of years, and discount amount is returned
     """
-    response = client.post(
-        "/", data={"loanAmt": "100000", "lengthOfLoan": "30", "intRate": "0.06"}
-    )
+    input_values = ["100000", "30", ".06"]
+    def mock_input(s):
+        return input_values.pop(0)
     print("\r")
-    print(" -- calculate loan functional test")
-    assert response.status_code == 200
-    assert b"$599.55" in response.data
+    print(" -- collectLoanDetailsfunctional test")
+    assert collectLoanDetails() == (100000, 30, .06)
 
-def main():
+def test_main():
     """
     GIVEN a user enters loan details
     WHEN the collectLoanDetails method is called
     THEN the user's monthly payment will be printed
     """
+    loanAmount = 100000
+    annualRate = .06
+    numberOfPmts = 30 *12
+    periodicIntRate = annualRate /12
+    discountFactor = (((1.0 + periodicIntRate) ** numberOfPmts) - 1.0) / (periodicIntRate * (1.0 + periodicIntRate) ** numberOfPmts)
+    loanPmt = loanAmount / discountFactor
+
+    input_values = [100000, .06, 30, 599.55]
+    def mock_input(s):
+        return input_values.pop(0)
+    print("\r")
+    print(" -- main method functional test")
+
+  
 
